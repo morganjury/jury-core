@@ -13,5 +13,7 @@ public interface DaoTemplate<DBO extends DatabaseObject> {
 
     DBO get(int uid) throws SQLException;
     List<DBO> get(List<Integer> uid) throws SQLException;
+    List<DBO> getAll() throws SQLException;
+    List<DBO> getPaged(int number, int offset) throws SQLException;
 
 }
