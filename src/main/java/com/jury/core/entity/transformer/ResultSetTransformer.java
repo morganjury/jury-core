@@ -18,6 +18,8 @@ import java.sql.ResultSet;
  */
 public interface ResultSetTransformer<DBO extends DatabaseObject, R extends ResultSet> extends Transformer<DBO, R> {
 
+    String NO_OP_MESSAGE = "Cannot generate ResultSet object, use insertString method";
+
     /**
      * This method consumes a DatabaseObject to produce a String that can be used in a SQL insert statement.
      *

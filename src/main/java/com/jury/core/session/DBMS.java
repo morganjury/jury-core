@@ -6,8 +6,8 @@ public enum DBMS {
 
     POSTGRES("org.postgresql.Driver"),
     SQLSERVER("com.microsoft.sqlserver.jdbc.SQLServerDriver"),
-    MYSQL("MYSQL"),
-    ORACLE("ORACLE");
+    MYSQL("com.mysql.jdbc.Driver"),
+    ORACLE("oracle.jdbc.driver.OracleDriver");
 
     private String className;
 
@@ -21,12 +21,14 @@ public enum DBMS {
 
     public String getConnectionUrl(String ip, int port, String databaseName) {
         switch (this) {
-            case POSTGRES:
-                return String.format("jdbc:%s://%s:%s/%s", "postgresql", ip, String.valueOf(port), databaseName);
-            case SQLSERVER:
-                return String.format("jdbc:%s://%s:%s;databaseName=%s;", "sqlserver", ip, String.valueOf(port), databaseName);
-            case MYSQL:
-            case ORACLE:
+            case POSTGRES: // 5432
+                return String.format("jdbc:postgresql://%s:%s/%s", ip, String.valueOf(port), databaseName);
+            case SQLSERVER: // 1433
+                return String.format("jdbc:sqlserver://%s:%s;databaseName=%s;", ip, String.valueOf(port), databaseName);
+            case MYSQL: // 3306
+                return String.format("jdbc:mysql://%s:%s/%s", ip, String.valueOf(port), databaseName);
+            case ORACLE: // 1521
+                return String.format("jdbc:oracle:thin:@%s:%s:%s", ip, String.valueOf(port), databaseName);
             default:
                 throw new UnknownDBMSException(this.name());
         }
