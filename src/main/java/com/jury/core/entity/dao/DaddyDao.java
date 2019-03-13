@@ -23,6 +23,11 @@ public class DaddyDao {
         PreparedStatement statement = session.getConnection().prepareStatement(query);
         try {
             statement.executeQuery();
+            // TODO https://i.stack.imgur.com/V6fjm.png
+            // psql and sql server do not mind inserts being done with this method, mysql does
+            // SELECT -> statement.executeQuery()
+            // INSERT/UPDATE/DELETE -> statement.executeUpdate()
+            // ANY -> statement.execute(); statement.getResultSet();
         } catch (SQLException e) {
             String emptyResultSetMessageForDbms = EmptyResultSetException.getMessage(session.getDbms());
             if (!e.getMessage().contains(emptyResultSetMessageForDbms)) {

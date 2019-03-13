@@ -6,7 +6,7 @@ public enum DBMS {
 
     POSTGRES("org.postgresql.Driver"),
     SQLSERVER("com.microsoft.sqlserver.jdbc.SQLServerDriver"),
-    MYSQL("com.mysql.jdbc.Driver"),
+    MYSQL("com.mysql.cj.jdbc.Driver"),
     ORACLE("oracle.jdbc.driver.OracleDriver");
 
     private String className;
