@@ -53,7 +53,7 @@ public class DaddyDao {
 
     protected void executeWithAction(String query, ResultSetAction rsa) throws SQLException {
         ResultSet rs = execute(query);
-        while (!rs.isLast()) {
+        while (!rs.isAfterLast()) { // this change may only apply to MYSQL so test
             rsa.perform(rs);
             rs.next();
         }
