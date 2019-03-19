@@ -11,9 +11,8 @@ import com.jury.core.exception.TransformerException;
  * or for producing a file that can be used for exporting and importing data.
  *
  * @param <DBO> The class inheriting from DatabaseObject
- * @param <S> String in CSV format
  */
-public interface CsvTransformer<DBO extends DatabaseObject, S extends String> extends Transformer<DBO, S> {
+public interface CsvTransformer<DBO extends DatabaseObject> extends Transformer<DBO, String> {
 
     /**
      * This method consumes a DatabaseObject to produce a String in CSV format.
@@ -23,7 +22,7 @@ public interface CsvTransformer<DBO extends DatabaseObject, S extends String> ex
      * @throws TransformerException if the object cannot be consumed
      */
     @Override
-    S consume(DBO object) throws TransformerException;
+    String consume(DBO object) throws TransformerException;
 
     /**
      * This method consumes a single line of CSV to produce a DatabaseObject.
@@ -33,6 +32,6 @@ public interface CsvTransformer<DBO extends DatabaseObject, S extends String> ex
      * @throws TransformerException if the object cannot be produced
      */
     @Override
-    DBO produce(S csv) throws TransformerException;
+    DBO produce(String csv) throws TransformerException;
 
 }

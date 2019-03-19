@@ -60,9 +60,13 @@ public class DaddyDao {
     }
 
     @SuppressWarnings("unchecked")
-    protected List executeIntoList(String query, ResultSetTransformer transformer, List list) throws SQLException {
-        executeWithAction(query, (result) -> list.add(transformer.produce(result)));
-        return list;
+    protected <T> List<T> executeIntoList(String query, ResultSetTransformer transformer, List<T> list) throws SQLException {
+        try {
+            executeWithAction(query, (result) -> list.add((T) transformer.produce(result)));
+            return list;
+        } catch (EmptyResultSetException e) {
+            return list;
+        }
     }
 
 }

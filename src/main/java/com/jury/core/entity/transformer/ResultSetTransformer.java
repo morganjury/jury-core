@@ -14,9 +14,8 @@ import java.sql.ResultSet;
  * returned by a query.
  *
  * @param <DBO> The class inheriting from DatabaseObject
- * @param <R> ResultSet
  */
-public interface ResultSetTransformer<DBO extends DatabaseObject, R extends ResultSet> extends Transformer<DBO, R> {
+public interface ResultSetTransformer<DBO extends DatabaseObject> extends Transformer<DBO, ResultSet> {
 
     String NO_OP_MESSAGE = "Cannot generate ResultSet object, use insertString method";
 
@@ -37,7 +36,7 @@ public interface ResultSetTransformer<DBO extends DatabaseObject, R extends Resu
      * @throws TransformerException ALWAYS
      */
     @Override
-    R consume(DBO object) throws TransformerException;
+    ResultSet consume(DBO object) throws TransformerException;
 
     /**
      * This method consumes the current ResultSet entry to produce a DatabaseObject
@@ -47,6 +46,6 @@ public interface ResultSetTransformer<DBO extends DatabaseObject, R extends Resu
      * @throws TransformerException if the object cannot be produced
      */
     @Override
-    DBO produce(R rs) throws TransformerException;
+    DBO produce(ResultSet rs) throws TransformerException;
 
 }
