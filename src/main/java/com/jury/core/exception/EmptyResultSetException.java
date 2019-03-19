@@ -1,7 +1,6 @@
 package com.jury.core.exception;
 
 import com.jury.core.session.DBMS;
-import com.sun.istack.internal.NotNull;
 
 import java.sql.SQLException;
 
@@ -16,11 +15,11 @@ public class EmptyResultSetException extends SQLException {
         super(DEFAULT_MESSAGE);
     }
 
-    public EmptyResultSetException(@NotNull final DBMS dbms) {
+    public EmptyResultSetException(final DBMS dbms) {
         super(getMessage(dbms));
     }
 
-    public static String getMessage(@NotNull DBMS dbms) {
+    public static String getMessage(DBMS dbms) {
         switch (dbms) {
             case POSTGRES:
                 return POSTGRESQL_MESSAGE;

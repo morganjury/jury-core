@@ -53,15 +53,16 @@ public class DaddyDao {
 
     protected void executeWithAction(String query, ResultSetAction rsa) throws SQLException {
         ResultSet rs = execute(query);
-        while (!rs.isAfterLast()) { // this change may only apply to MYSQL so test
+        while (!rs.isAfterLast()) { // TODO this change may only apply to MYSQL so test
             rsa.perform(rs);
             rs.next();
         }
     }
 
     @SuppressWarnings("unchecked")
-    protected void executeIntoList(String query, ResultSetTransformer transformer, List list) throws SQLException {
+    protected List executeIntoList(String query, ResultSetTransformer transformer, List list) throws SQLException {
         executeWithAction(query, (result) -> list.add(transformer.produce(result)));
+        return list;
     }
 
 }
