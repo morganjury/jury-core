@@ -1,7 +1,7 @@
 package com.jury.core.entity;
 
-public interface DatabaseObject<K> {
+public interface DatabaseObject<PK> {
 
-    K getId();
+    PK getId();
 
 }
