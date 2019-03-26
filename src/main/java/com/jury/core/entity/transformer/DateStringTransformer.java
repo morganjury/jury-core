@@ -2,10 +2,10 @@ package com.jury.core.entity.transformer;
 
 import com.jury.core.exception.TransformerException;
 
-import java.sql.Date;
+import java.util.Date;
 
 @SuppressWarnings("deprecation")
-public class SqlDateTransformer implements Transformer<Date, String> {
+public class DateStringTransformer implements Transformer<Date, String> {
 
     /**
      * java.sql.Date objects can be a pain (hence this transformer) so just call "new Date(System.currentTimeMillis())"
