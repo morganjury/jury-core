@@ -5,6 +5,7 @@ import com.jury.core.exception.TransformerException;
 
 import java.util.Date;
 
+@SuppressWarnings("deprecation")
 public class DDMMYYYYTransformer implements DateStringTransformer {
 
     String separator;
