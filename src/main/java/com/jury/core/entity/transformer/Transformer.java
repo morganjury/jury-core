@@ -14,6 +14,10 @@ import com.jury.core.exception.TransformerException;
  */
 public interface Transformer<O, R> {
 
+    String APOSTROPHE = "'";
+    String QUOTE = "\"";
+    String COMMA = ",";
+
     /**
      * This method will consume the object of interest and produce an object that is an alternative representation of
      * this object of interest.

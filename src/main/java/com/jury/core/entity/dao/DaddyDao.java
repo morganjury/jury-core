@@ -19,6 +19,7 @@ public class DaddyDao {
 
     public DaddyDao(Session session) {
         this.session = session;
+        // TODO take a string TABLE_NAME as well
     }
 
     protected void executeWithNoResults(String query) throws SQLException {

@@ -3,7 +3,7 @@ package com.jury.core.exception;
 public class TransformerException extends RuntimeException {
 
     public TransformerException() {
-        super("Unknwon transformer error");
+        super("Unknwon transformer failure");
     }
 
     public TransformerException(Class from, Class to) {

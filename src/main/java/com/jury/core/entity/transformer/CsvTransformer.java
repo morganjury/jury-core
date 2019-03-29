@@ -14,6 +14,8 @@ import com.jury.core.exception.TransformerException;
  */
 public interface CsvTransformer<DBO extends DatabaseObject> extends Transformer<DBO, String> {
 
+    String COMMA_IN_QUOTES_REGEX = ",(?=(?:[^\\\"]*\\\"[^\\\"]*\\\")*[^\\\"]*$)";
+
     /**
      * This method consumes a DatabaseObject to produce a String in CSV format.
      *
