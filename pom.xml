@@ -11,7 +11,8 @@
     <dependencies>
 
         <!-- Test dependencies -->
-        <!-- These should have scope 'test' but projects that depend on jury-core wouldn't pick them up -->
+        <!-- These should have scope 'test' but they wouldn't be packaged into the jar if they did -->
+        <!-- TODO there must be a way to not package these dependencies into the jar (bloating) but still link to the project depending on jury-core -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -44,6 +45,7 @@
             <artifactId>mysql-connector-java</artifactId>
             <version>8.0.14</version>
         </dependency>
+        <!-- TODO once oracle db is working release 1.0 -->
         <!--<dependency>-->
             <!--<groupId>com.oracle.jdbc</groupId>-->
             <!--<artifactId>ojdbc8</artifactId>-->

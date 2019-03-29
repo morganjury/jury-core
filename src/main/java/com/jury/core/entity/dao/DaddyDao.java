@@ -1,5 +1,6 @@
 package com.jury.core.entity.dao;
 
+import com.jury.core.entity.DatabaseObject;
 import com.jury.core.entity.transformer.ResultSetTransformer;
 import com.jury.core.exception.EmptyResultSetException;
 import com.jury.core.session.Session;
@@ -25,12 +26,11 @@ public class DaddyDao {
     protected void executeWithNoResults(String query) throws SQLException {
         PreparedStatement statement = session.getConnection().prepareStatement(query);
         try {
-            // TODO https://i.stack.imgur.com/V6fjm.png
-            // SELECT -> statement.executeQuery()
+            // https://i.stack.imgur.com/V6fjm.png
+            // SELECT -> statement.executeQuery() // psql and sqlserver do not mind inserts being done with executeQuery, mysql does
             // INSERT/UPDATE/DELETE -> statement.executeUpdate()
             // ANY -> statement.execute(); statement.getResultSet();
-            // psql and sql server do not mind inserts being done with executeQuery, mysql does
-            boolean resultSetPresent = statement.execute(); // TODO more often than not will be executeUpdate?
+            boolean resultSetPresent = statement.execute();
             if (resultSetPresent) {
                 throw new SQLException("ResultSet found but no results expected from query");
             }
@@ -54,16 +54,15 @@ public class DaddyDao {
 
     protected void executeWithAction(String query, ResultSetAction rsa) throws SQLException {
         ResultSet rs = execute(query);
-        while (!rs.isAfterLast()) { // TODO this change may only apply to MYSQL so test
+        while (!rs.isAfterLast()) {
             rsa.perform(rs);
             rs.next();
         }
     }
 
-    @SuppressWarnings("unchecked")
-    protected <T> List<T> executeIntoList(String query, ResultSetTransformer transformer, List<T> list) throws SQLException {
+    protected <T extends DatabaseObject> List<T> executeIntoList(String query, ResultSetTransformer<T> transformer, List<T> list) throws SQLException {
         try {
-            executeWithAction(query, (result) -> list.add((T) transformer.produce(result)));
+            executeWithAction(query, (result) -> list.add(transformer.produce(result)));
             return list;
         } catch (EmptyResultSetException e) {
             return list;

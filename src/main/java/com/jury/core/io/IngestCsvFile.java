@@ -26,22 +26,18 @@ public class IngestCsvFile<T extends DatabaseObject, PK> {
             throw new IOException("File does not exist");
         }
         Counter c = new Counter();
-        try {
-            FileHandler.readWithAction(file, (line) -> {
-                try {
-                    c.lines++;
-                    T object = csvTransformer.produce(line);
-                    c.objects++;
-                    dao.insert(object);
-                    c.success++;
-                } catch (Exception e) {
-                    c.failure(e.getMessage());
-                }
-            });
-            return c;
-        } finally {
-            session.end();
-        }
+        FileHandler.readWithAction(file, (line) -> {
+            try {
+                c.lines++;
+                T object = csvTransformer.produce(line);
+                c.objects++;
+                dao.insert(object);
+                c.success++;
+            } catch (Exception e) {
+                c.failure(e.getMessage());
+            }
+        });
+        return c;
     }
 
 }
