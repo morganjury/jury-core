@@ -3,7 +3,6 @@ package com.jury.core.entity.transformer;
 import com.jury.core.entity.transformer.impl.DDMMYYYYslashTransformer;
 import com.jury.core.entity.transformer.impl.YYYYMMDDTransformer;
 import com.jury.core.entity.transformer.impl.YYYYMMDDdashTransformer;
-import com.jury.core.entity.transformer.impl.YYYYMMDDslashTransformer;
 import org.junit.Test;
 
 import java.sql.Timestamp;
@@ -11,13 +10,12 @@ import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
 
-@SuppressWarnings("deprecation")
 public class DateStringTransformerTest {
 
     private final DateStringTransformer dateStringTransformer = new YYYYMMDDTransformer();
     private final DateStringTransformer dashDateStringTransformer = new YYYYMMDDdashTransformer();
     private final DateStringTransformer slashDateStringTransformer = new DDMMYYYYslashTransformer();
-    private final Date testDate = new Date(2019-1900,3-1,25);
+    private final Date testDate = DateStringTransformer.buildDate(25, 3, 2019);
     private final long testTimeStampMillis = 1553589581464L;
 
     @Test

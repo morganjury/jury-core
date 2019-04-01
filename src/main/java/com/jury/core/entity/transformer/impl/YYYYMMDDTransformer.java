@@ -3,9 +3,9 @@ package com.jury.core.entity.transformer.impl;
 import com.jury.core.entity.transformer.DateStringTransformer;
 import com.jury.core.exception.TransformerException;
 
+import java.time.LocalDate;
 import java.util.Date;
 
-@SuppressWarnings("deprecation")
 public class YYYYMMDDTransformer implements DateStringTransformer {
 
     String separator;
@@ -13,12 +13,13 @@ public class YYYYMMDDTransformer implements DateStringTransformer {
     @Override
     public String consume(Date object) throws TransformerException {
         try {
-            String year = "" + (object.getYear() + 1900);
-            String month = "" + (object.getMonth() + 1);
+            LocalDate date = DateStringTransformer.getLocalDate(object);
+            String year = "" + date.getYear();
+            String month = "" + date.getMonthValue();
+            String day = "" + date.getDayOfMonth();
             if (month.length() == 1) {
                 month = "0" + month;
             }
-            String day = "" + object.getDate();
             if (day.length() == 1) {
                 day = "0" + day;
             }
@@ -44,7 +45,7 @@ public class YYYYMMDDTransformer implements DateStringTransformer {
             int year = Integer.valueOf(object.substring(0, 4));
             int month = Integer.valueOf(object.substring(4, 6));
             int day = Integer.valueOf(object.substring(6, 8));
-            return new Date(year - 1900, month - 1, day);
+            return DateStringTransformer.buildDate(day, month, year);
         } catch (Exception e) {
             throw new TransformerException(String.class, Date.class, e);
         }
