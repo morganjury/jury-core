@@ -10,7 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-public class DaddyDao {
+public class DaoExecutor {
 
     public interface ResultSetAction {
         void perform(ResultSet rs);
@@ -18,9 +18,8 @@ public class DaddyDao {
 
     Session session;
 
-    public DaddyDao(Session session) {
+    public DaoExecutor(Session session) {
         this.session = session;
-        // TODO take a string TABLE_NAME as well
     }
 
     protected void executeWithNoResults(String query) throws SQLException {
