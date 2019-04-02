@@ -12,19 +12,9 @@ import com.jury.core.exception.TransformerException;
  *
  * @param <DBO> The class inheriting from DatabaseObject
  */
-public interface CsvTransformer<DBO extends DatabaseObject> extends Transformer<DBO, String> {
+public interface CsvTransformer<DBO extends DatabaseObject> extends FileTransformer<DBO> {
 
     String COMMA_IN_QUOTES_REGEX = ",(?=(?:[^\\\"]*\\\"[^\\\"]*\\\")*[^\\\"]*$)";
-
-    /**
-     * This method consumes a DatabaseObject to produce a String in CSV format.
-     *
-     * @param object the DatabaseObject
-     * @return a String in CSV format
-     * @throws TransformerException if the object cannot be consumed
-     */
-    @Override
-    String consume(DBO object) throws TransformerException;
 
     /**
      * This method consumes a single line of CSV to produce a DatabaseObject.
@@ -34,6 +24,16 @@ public interface CsvTransformer<DBO extends DatabaseObject> extends Transformer<
      * @throws TransformerException if the object cannot be produced
      */
     @Override
-    DBO produce(String csv) throws TransformerException;
+    DBO consume(String csv) throws TransformerException;
+
+    /**
+     * This method consumes a DatabaseObject to produce a String in CSV format.
+     *
+     * @param object the DatabaseObject
+     * @return a String in CSV format
+     * @throws TransformerException if the object cannot be consumed
+     */
+    @Override
+    String produce(DBO object) throws TransformerException;
 
 }

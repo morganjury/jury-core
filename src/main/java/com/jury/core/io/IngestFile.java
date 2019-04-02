@@ -2,21 +2,19 @@ package com.jury.core.io;
 
 import com.jury.core.entity.DatabaseObject;
 import com.jury.core.entity.dao.DaoTemplate;
-import com.jury.core.entity.transformer.CsvTransformer;
+import com.jury.core.entity.transformer.FileTransformer;
 import com.jury.core.session.Session;
 
 import java.io.File;
 import java.io.IOException;
 
-public class IngestCsvFile<T extends DatabaseObject, PK> {
+public class IngestFile<T extends DatabaseObject, PK> {
 
-    private Session session;
-    private CsvTransformer<T> csvTransformer;
+    private FileTransformer<T> fileTransformer;
     private DaoTemplate<T,PK> dao;
 
-    public IngestCsvFile(Session session, CsvTransformer<T> csvTransformer, DaoTemplate<T, PK> dao) {
-        this.session = session;
-        this.csvTransformer = csvTransformer;
+    public IngestFile(FileTransformer<T> fileTransformer, DaoTemplate<T, PK> dao) {
+        this.fileTransformer = fileTransformer;
         this.dao = dao;
     }
 
@@ -27,9 +25,16 @@ public class IngestCsvFile<T extends DatabaseObject, PK> {
         }
         Counter c = new Counter();
         FileHandler.readWithAction(file, (line) -> {
+            if (line == null) {
+                return;
+            }
+            line = line.replace("\u0000","").replace("\\u0000","");
+            if (line.isEmpty()) {
+                return;
+            }
             try {
                 c.lines++;
-                T object = csvTransformer.produce(line);
+                T object = fileTransformer.consume(line);
                 c.objects++;
                 dao.insert(object);
                 c.success++;
