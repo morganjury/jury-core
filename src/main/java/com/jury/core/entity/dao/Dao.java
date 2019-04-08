@@ -12,8 +12,11 @@ import java.util.List;
 
 public class Dao<DBO extends DatabaseObject, PK> extends DaoExecutor implements DaoTemplate<DBO,PK> {
 
-    String tableName;
-    ResultSetTransformer<DBO> resultSetTransformer;
+    public String tableName;
+    public String insertColumns;
+    public ResultSetTransformer<DBO> resultSetTransformer;
+
+    // TODO pass identity column name
 
     public Dao(Session session, String tableName, ResultSetTransformer<DBO> resultSetTransformer) {
         super(session);
@@ -21,8 +24,17 @@ public class Dao<DBO extends DatabaseObject, PK> extends DaoExecutor implements 
         this.resultSetTransformer = resultSetTransformer;
     }
 
+    public Dao(Session session, String tableName, String insertColumns, ResultSetTransformer<DBO> resultSetTransformer) {
+        this(session, tableName, resultSetTransformer);
+        this.insertColumns = insertColumns;
+    }
+
     public void insert(DBO object) throws SQLException {
-        executeWithNoResults("INSERT INTO " + tableName + " VALUES (" + resultSetTransformer.insertString(object) + ")");
+        if (insertColumns == null) {
+            executeWithNoResults("INSERT INTO " + tableName + " VALUES (" + resultSetTransformer.insertString(object) + ")");
+        } else {
+            executeWithNoResults("INSERT INTO " + tableName + " (" + insertColumns + ") VALUES (" + resultSetTransformer.insertString(object) + ")");
+        }
     }
 
     public void update(PK key, DBO object) throws SQLException {
@@ -71,6 +83,14 @@ public class Dao<DBO extends DatabaseObject, PK> extends DaoExecutor implements 
     }
 
     static String sqlReadyList(List<Object> list) {
+        return buildList(list);
+    }
+
+    static String sqlReadyListNullified(List<Object> list) {
+        return nullifyBlanks(sqlReadyList(list));
+    }
+
+    private static String buildList(List<Object> list) {
         StringBuilder sb = new StringBuilder();
         boolean isFirst = true;
         for (Object o : list) {
@@ -84,6 +104,16 @@ public class Dao<DBO extends DatabaseObject, PK> extends DaoExecutor implements 
             sb.append("'");
         }
         return sb.toString();
+    }
+
+    private static String nullifyBlanks(String insertString) {
+        // must loop here because this method is stupid:
+        // when replacing ,'','', it sees the first ,'', and replaces it with ,NULL, but then starts at the following '
+        // instead of the separating , so it only sees '', instead of ,'',
+        while (insertString.contains(",\'\',")) {
+            insertString = insertString.replaceAll(",\'\',",",NULL,");
+        }
+        return insertString;
     }
 
 }

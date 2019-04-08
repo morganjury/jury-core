@@ -3,7 +3,6 @@ package com.jury.core.io;
 import com.jury.core.entity.DatabaseObject;
 import com.jury.core.entity.dao.DaoTemplate;
 import com.jury.core.entity.transformer.FileTransformer;
-import com.jury.core.session.Session;
 
 import java.io.File;
 import java.io.IOException;

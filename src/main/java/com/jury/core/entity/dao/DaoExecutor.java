@@ -8,6 +8,7 @@ import com.jury.core.session.Session;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DaoExecutor {
@@ -26,7 +27,7 @@ public class DaoExecutor {
         PreparedStatement statement = session.getConnection().prepareStatement(query);
         try {
             // https://i.stack.imgur.com/V6fjm.png
-            // SELECT -> statement.executeQuery() // psql and sqlserver do not mind inserts being done with executeQuery, mysql does
+            // SELECT -> statement.executeQuery() // PSQL and SQLServer throw a SQLException stating EmptyResultSet, MYSQL refuses to run the query
             // INSERT/UPDATE/DELETE -> statement.executeUpdate()
             // ANY -> statement.execute(); statement.getResultSet();
             boolean resultSetPresent = statement.execute();
@@ -64,7 +65,7 @@ public class DaoExecutor {
             executeWithAction(query, (result) -> list.add(transformer.produce(result)));
             return list;
         } catch (EmptyResultSetException e) {
-            return list;
+            return new ArrayList<>();
         }
     }
 
