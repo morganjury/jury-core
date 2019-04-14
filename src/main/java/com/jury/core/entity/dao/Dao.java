@@ -12,28 +12,34 @@ import java.util.List;
 
 public class Dao<DBO extends DatabaseObject, PK> extends DaoExecutor implements DaoTemplate<DBO,PK> {
 
-    public String tableName;
+    public String idColumn;
+    public String getTable;
+    public String insertTable;
     public String insertColumns;
     public ResultSetTransformer<DBO> resultSetTransformer;
 
-    // TODO pass identity column name
-
-    public Dao(Session session, String tableName, ResultSetTransformer<DBO> resultSetTransformer) {
-        super(session);
-        this.tableName = tableName;
-        this.resultSetTransformer = resultSetTransformer;
+    public Dao(Session session, String getTable, ResultSetTransformer<DBO> resultSetTransformer) {
+        this(session, null, getTable, getTable, null, resultSetTransformer);
     }
 
-    public Dao(Session session, String tableName, String insertColumns, ResultSetTransformer<DBO> resultSetTransformer) {
-        this(session, tableName, resultSetTransformer);
+    public Dao(Session session, String getTable, String insertColumns, ResultSetTransformer<DBO> resultSetTransformer) {
+        this(session, null, getTable, getTable, insertColumns, resultSetTransformer);
+    }
+
+    public Dao(Session session, String idColumn, String getTable, String insertTable, String insertColumns, ResultSetTransformer<DBO> resultSetTransformer) {
+        super(session);
+        this.idColumn = idColumn == null ? "id" : idColumn;
+        this.getTable = getTable;
+        this.insertTable = insertTable;
         this.insertColumns = insertColumns;
+        this.resultSetTransformer = resultSetTransformer;
     }
 
     public void insert(DBO object) throws SQLException {
         if (insertColumns == null) {
-            executeWithNoResults("INSERT INTO " + tableName + " VALUES (" + resultSetTransformer.insertString(object) + ")");
+            executeWithNoResults("INSERT INTO " + insertTable + " VALUES (" + resultSetTransformer.insertString(object) + ")");
         } else {
-            executeWithNoResults("INSERT INTO " + tableName + " (" + insertColumns + ") VALUES (" + resultSetTransformer.insertString(object) + ")");
+            executeWithNoResults("INSERT INTO " + insertTable + " (" + insertColumns + ") VALUES (" + resultSetTransformer.insertString(object) + ")");
         }
     }
 
@@ -42,35 +48,35 @@ public class Dao<DBO extends DatabaseObject, PK> extends DaoExecutor implements 
     }
 
     public void delete(PK key) throws SQLException {
-        executeWithNoResults("DELETE FROM " + tableName + " WHERE id=" + key);
+        executeWithNoResults("DELETE FROM " + getTable + " WHERE " + idColumn + "=" + key);
     }
 
     public DBO get(PK key) throws SQLException, TransformerException {
-        return executeIntoList("SELECT * FROM " + tableName + " WHERE id=" + key, resultSetTransformer, new ArrayList<>()).get(0);
+        return executeIntoList("SELECT * FROM " + getTable + " WHERE " + idColumn + "=" + key, resultSetTransformer, new ArrayList<>()).get(0);
     }
 
     public List<DBO> get(List<PK> list) throws SQLException {
-        return executeIntoList("SELECT * FROM " + tableName + " WHERE id in (" + sqlReadyList(list) + ")", resultSetTransformer, new ArrayList<>());
+        return executeIntoList("SELECT * FROM " + getTable + " WHERE " + idColumn + " in (" + sqlReadyList(list) + ")", resultSetTransformer, new ArrayList<>());
     }
 
     public List<DBO> getAll() throws SQLException {
-        return executeIntoList("SELECT * FROM " + tableName, resultSetTransformer, new ArrayList<>());
+        return executeIntoList("SELECT * FROM " + getTable, resultSetTransformer, new ArrayList<>());
     }
 
     public List<DBO> getPaged(int numResults, int offset) throws SQLException {
         String query;
         switch (session.getDbms()) {
             case POSTGRES:
-                query = "SELECT * FROM " + tableName + " LIMIT " + numResults + " OFFSET " + offset;
+                query = "SELECT * FROM " + getTable + " LIMIT " + numResults + " OFFSET " + offset;
                 break;
             case SQLSERVER:
-                query = "SELECT * FROM " + tableName + " OFFSET " + offset + " FETCH NEXT " + numResults + " ROWS ONLY";
+                query = "SELECT * FROM " + getTable + " OFFSET " + offset + " FETCH NEXT " + numResults + " ROWS ONLY";
                 break;
             case MYSQL:
-                query = "SELECT * FROM " + tableName + " LIMIT " + offset + "," + numResults;
+                query = "SELECT * FROM " + getTable + " LIMIT " + offset + "," + numResults;
                 break;
             case ORACLE:
-                query = "SELECT * FROM " + tableName + " OFFSET " + offset + " FETCH NEXT " + numResults + " ROWS ONLY";
+                query = "SELECT * FROM " + getTable + " OFFSET " + offset + " FETCH NEXT " + numResults + " ROWS ONLY";
                 break;
             default:
                 throw new IllegalArgumentException("Query for DBMS " + session.getDbms().name() + " not known.");
