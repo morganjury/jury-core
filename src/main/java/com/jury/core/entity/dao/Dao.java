@@ -48,7 +48,7 @@ public class Dao<DBO extends DatabaseObject, PK> extends DaoExecutor implements 
     }
 
     public void delete(PK key) throws SQLException {
-        executeWithNoResults("DELETE FROM " + getTable + " WHERE " + idColumn + "=" + key);
+        executeWithNoResults("DELETE FROM " + insertTable + " WHERE " + idColumn + "=" + key);
     }
 
     public DBO get(PK key) throws SQLException, TransformerException {
@@ -104,6 +104,10 @@ public class Dao<DBO extends DatabaseObject, PK> extends DaoExecutor implements 
                 sb.append(",");
             } else {
                 isFirst = false;
+            }
+            if (o == null) {
+                sb.append("NULL");
+                continue;
             }
             sb.append("'");
             sb.append(String.valueOf(o).replace("'","''"));
