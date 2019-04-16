@@ -48,11 +48,11 @@ public class Dao<DBO extends DatabaseObject, PK> extends DaoExecutor implements 
     }
 
     public void delete(PK key) throws SQLException {
-        executeWithNoResults("DELETE FROM " + insertTable + " WHERE " + idColumn + "=" + key);
+        executeWithNoResults("DELETE FROM " + insertTable + " WHERE " + idColumn + "=" + Dao.sqlReadyList(key));
     }
 
     public DBO get(PK key) throws SQLException, TransformerException {
-        return executeIntoList("SELECT * FROM " + getTable + " WHERE " + idColumn + "=" + key, resultSetTransformer, new ArrayList<>()).get(0);
+        return executeIntoList("SELECT * FROM " + getTable + " WHERE " + idColumn + "=" + Dao.sqlReadyList(key), resultSetTransformer, new ArrayList<>()).get(0);
     }
 
     public List<DBO> get(List<PK> list) throws SQLException {

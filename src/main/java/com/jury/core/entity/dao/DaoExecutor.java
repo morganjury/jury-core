@@ -17,7 +17,7 @@ public class DaoExecutor {
         void perform(ResultSet rs);
     }
 
-    Session session;
+    protected Session session;
 
     public DaoExecutor(Session session) {
         this.session = session;
