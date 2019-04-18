@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 
-public interface DateStringTransformer extends Transformer<Date, String> {
+public interface DateStringTransformer extends Transformer<LocalDate, String> {
 
     /**
      * java.sql.Date objects can be a pain (hence this transformer) so just call "new Date(System.currentTimeMillis())"
@@ -15,7 +15,7 @@ public interface DateStringTransformer extends Transformer<Date, String> {
      * @throws TransformerException
      */
     @Override
-    String consume(Date object) throws TransformerException;
+    String consume(LocalDate object) throws TransformerException;
 
     /**
      *
@@ -24,20 +24,12 @@ public interface DateStringTransformer extends Transformer<Date, String> {
      * @throws TransformerException
      */
     @Override
-    Date produce(String object) throws TransformerException;
+    LocalDate produce(String object) throws TransformerException;
 
     static LocalDate getLocalDate(Date date) {
         return date.toInstant()
                 .atZone(ZoneId.systemDefault())
                 .toLocalDate();
-    }
-
-    static Date buildDate(int day, int month, int year) {
-        return Date.from(
-                LocalDate.of(year, month, day)
-                        .atStartOfDay(ZoneId.systemDefault())
-                        .toInstant()
-        );
     }
 
 }

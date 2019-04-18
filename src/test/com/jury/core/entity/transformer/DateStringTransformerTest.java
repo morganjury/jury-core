@@ -6,6 +6,7 @@ import com.jury.core.entity.transformer.impl.YYYYMMDDdashTransformer;
 import org.junit.Test;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
@@ -15,13 +16,14 @@ public class DateStringTransformerTest {
     private final DateStringTransformer dateStringTransformer = new YYYYMMDDTransformer();
     private final DateStringTransformer dashDateStringTransformer = new YYYYMMDDdashTransformer();
     private final DateStringTransformer slashDateStringTransformer = new DDMMYYYYslashTransformer();
-    private final Date testDate = DateStringTransformer.buildDate(25, 3, 2019);
+    private final LocalDate testDate = LocalDate.of(2019, 3, 25);
     private final long testTimeStampMillis = 1553589581464L;
+    private final LocalDate testDate2 = DateStringTransformer.getLocalDate(new Timestamp(testTimeStampMillis));
 
     @Test
     public void standardConsume() {
         assertEquals("20190325", dateStringTransformer.consume(testDate));
-        assertEquals("20190326", dateStringTransformer.consume(new Timestamp(testTimeStampMillis)));
+        assertEquals("20190326", dateStringTransformer.consume(testDate2));
     }
 
     @Test
@@ -32,7 +34,7 @@ public class DateStringTransformerTest {
     @Test
     public void dashConsume() {
         assertEquals("2019-03-25", dashDateStringTransformer.consume(testDate));
-        assertEquals("2019-03-26", dashDateStringTransformer.consume(new Timestamp(testTimeStampMillis)));
+        assertEquals("2019-03-26", dashDateStringTransformer.consume(testDate2));
     }
 
     @Test
@@ -43,7 +45,7 @@ public class DateStringTransformerTest {
     @Test
     public void slashConsume() {
         assertEquals("25/03/2019", slashDateStringTransformer.consume(testDate));
-        assertEquals("26/03/2019", slashDateStringTransformer.consume(new Timestamp(testTimeStampMillis)));
+        assertEquals("26/03/2019", slashDateStringTransformer.consume(testDate2));
     }
 
     @Test

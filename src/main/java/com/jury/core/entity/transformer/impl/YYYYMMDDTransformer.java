@@ -11,9 +11,8 @@ public class YYYYMMDDTransformer implements DateStringTransformer {
     String separator;
 
     @Override
-    public String consume(Date object) throws TransformerException {
+    public String consume(LocalDate date) throws TransformerException {
         try {
-            LocalDate date = DateStringTransformer.getLocalDate(object);
             String year = "" + date.getYear();
             String month = "" + date.getMonthValue();
             String day = "" + date.getDayOfMonth();
@@ -32,7 +31,7 @@ public class YYYYMMDDTransformer implements DateStringTransformer {
     }
 
     @Override
-    public Date produce(String object) throws TransformerException {
+    public LocalDate produce(String object) throws TransformerException {
         if (separator != null) {
             object = object.replace(separator,"");
         }
@@ -45,7 +44,7 @@ public class YYYYMMDDTransformer implements DateStringTransformer {
             int year = Integer.valueOf(object.substring(0, 4));
             int month = Integer.valueOf(object.substring(4, 6));
             int day = Integer.valueOf(object.substring(6, 8));
-            return DateStringTransformer.buildDate(day, month, year);
+            return LocalDate.of(year, month, day);
         } catch (Exception e) {
             throw new TransformerException(String.class, Date.class, e);
         }
