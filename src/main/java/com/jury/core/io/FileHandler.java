@@ -29,7 +29,6 @@ public class FileHandler {
     public static void executeSqlFile(Connection connection, File file) throws IOException, SQLException {
         connection.setAutoCommit(false);
         Savepoint before = connection.setSavepoint();
-        connection.commit();
         try {
             StringBuilder sb = new StringBuilder();
             FileHandler.readWithAction(file, sb::append);
@@ -40,11 +39,13 @@ public class FileHandler {
             for (String command : commands) {
                 connection.prepareStatement(command).execute();
             }
+            connection.commit();
+            connection.setAutoCommit(true);
         } catch (Exception e) {
             connection.rollback(before);
             connection.releaseSavepoint(before);
-            connection.setAutoCommit(true);
             connection.commit();
+            connection.setAutoCommit(true);
             throw e;
         }
     }
