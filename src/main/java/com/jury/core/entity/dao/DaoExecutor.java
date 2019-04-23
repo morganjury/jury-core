@@ -23,6 +23,8 @@ public class DaoExecutor {
         this.session = session;
     }
 
+    // TODO make transactional commit method - look at FileHandler.executeSqlFile
+
     protected void executeWithNoResults(String query) throws SQLException {
         PreparedStatement statement = session.getConnection().prepareStatement(query);
         try {
