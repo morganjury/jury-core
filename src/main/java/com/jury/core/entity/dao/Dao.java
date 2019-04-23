@@ -5,6 +5,7 @@ import com.jury.core.entity.transformer.ResultSetTransformer;
 import com.jury.core.exception.TransformerException;
 import com.jury.core.session.Session;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -48,11 +49,12 @@ public class Dao<DBO extends DatabaseObject, PK> extends DaoExecutor implements 
     }
 
     public void delete(PK key) throws SQLException {
-        executeWithNoResults("DELETE FROM " + insertTable + " WHERE " + idColumn + "=" + Dao.sqlReadyList(key));
+        executeWithNoResults("DELETE FROM " + insertTable + " WHERE " + idColumn + "=" + sqlReadyList(key));
     }
 
     public DBO get(PK key) throws SQLException, TransformerException {
-        return executeIntoList("SELECT * FROM " + getTable + " WHERE " + idColumn + "=" + Dao.sqlReadyList(key), resultSetTransformer, new ArrayList<>()).get(0);
+        ResultSet rs = execute("SELECT * FROM " + getTable + " WHERE " + idColumn + "=" + sqlReadyList(key));
+        return resultSetTransformer.produce(rs);
     }
 
     public List<DBO> get(List<PK> list) throws SQLException {
