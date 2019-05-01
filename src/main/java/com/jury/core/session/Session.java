@@ -15,6 +15,9 @@ public class Session {
     private int port;
     private String databaseName;
 
+    // TODO load database connection params (DBMS, ip, port, username, password) from file
+    //  constructor that takes settings
+
     private Session() {
         throw new UnsupportedOperationException("Must initiate class variables");
     }

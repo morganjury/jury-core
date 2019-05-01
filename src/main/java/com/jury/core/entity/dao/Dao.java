@@ -87,15 +87,15 @@ public class Dao<DBO extends DatabaseObject, PK> extends DaoExecutor implements 
     }
 
     public static String sqlReadyList(Object ... objects) {
-        return sqlReadyList(Arrays.asList(objects));
+        return sqlReadyListFromList(Arrays.asList(objects));
     }
 
-    static String sqlReadyList(List<Object> list) {
+    public static String sqlReadyListFromList(List<Object> list) {
         return buildList(list);
     }
 
     static String sqlReadyListNullified(List<Object> list) {
-        return nullifyBlanks(sqlReadyList(list));
+        return nullifyBlanks(sqlReadyListFromList(list));
     }
 
     private static String buildList(List<Object> list) {
