@@ -19,16 +19,31 @@ public enum DBMS {
         return className;
     }
 
-    public String getConnectionUrl(String ip, int port, String databaseName) {
+    public String getConnectionUrl(String host, int port, String databaseName) {
         switch (this) {
             case POSTGRES: // 5432
-                return String.format("jdbc:postgresql://%s:%s/%s", ip, String.valueOf(port), databaseName);
+                return String.format("jdbc:postgresql://%s:%s/%s", host, String.valueOf(port), databaseName);
             case SQLSERVER: // 1433
-                return String.format("jdbc:sqlserver://%s:%s;databaseName=%s;", ip, String.valueOf(port), databaseName);
+                return String.format("jdbc:sqlserver://%s:%s;databaseName=%s;", host, String.valueOf(port), databaseName);
             case MYSQL: // 3306
-                return String.format("jdbc:mysql://%s:%s/%s", ip, String.valueOf(port), databaseName);
+                return String.format("jdbc:mysql://%s:%s/%s", host, String.valueOf(port), databaseName);
             case ORACLE: // 1521
-                return String.format("jdbc:oracle:thin:@%s:%s:%s", ip, String.valueOf(port), databaseName);
+                return String.format("jdbc:oracle:thin:@%s:%s:%s", host, String.valueOf(port), databaseName);
+            default:
+                throw new UnknownDBMSException(this.name());
+        }
+    }
+
+    public int getDefaultPort() {
+        switch (this) {
+            case POSTGRES:
+                return 5432;
+            case SQLSERVER:
+                return 1433;
+            case MYSQL:
+                return 3306;
+            case ORACLE:
+                return 1521;
             default:
                 throw new UnknownDBMSException(this.name());
         }
