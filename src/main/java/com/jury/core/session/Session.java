@@ -1,5 +1,8 @@
 package com.jury.core.session;
 
+import com.jury.core.exception.SettingException;
+import com.jury.core.settings.DatabaseSettingsManager;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -15,11 +18,12 @@ public class Session {
     private int port;
     private String databaseName;
 
-    // TODO load database connection params (DBMS, ip, port, username, password) from file
-    //  constructor that takes settings
-
     private Session() {
         throw new UnsupportedOperationException("Must initiate class variables");
+    }
+
+    public Session(DatabaseSettingsManager databaseSettingsManager, String username, String password) throws SettingException {
+        this(databaseSettingsManager.getDbms(), databaseSettingsManager.getHost(), databaseSettingsManager.getPort(), databaseSettingsManager.getDbName(), username, password);
     }
 
     public Session(DBMS dbms, String ip, int port, String databaseName, String username, String password) {

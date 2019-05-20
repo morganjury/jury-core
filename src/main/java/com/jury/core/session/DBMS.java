@@ -21,13 +21,13 @@ public enum DBMS {
 
     public String getConnectionUrl(String host, int port, String databaseName) {
         switch (this) {
-            case POSTGRES: // 5432
+            case POSTGRES:
                 return String.format("jdbc:postgresql://%s:%s/%s", host, String.valueOf(port), databaseName);
-            case SQLSERVER: // 1433
+            case SQLSERVER:
                 return String.format("jdbc:sqlserver://%s:%s;databaseName=%s;", host, String.valueOf(port), databaseName);
-            case MYSQL: // 3306
+            case MYSQL:
                 return String.format("jdbc:mysql://%s:%s/%s", host, String.valueOf(port), databaseName);
-            case ORACLE: // 1521
+            case ORACLE:
                 return String.format("jdbc:oracle:thin:@%s:%s:%s", host, String.valueOf(port), databaseName);
             default:
                 throw new UnknownDBMSException(this.name());
