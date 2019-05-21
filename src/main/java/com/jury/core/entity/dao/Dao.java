@@ -66,24 +66,22 @@ public class Dao<DBO extends DatabaseObject, PK> extends DaoExecutor implements 
     }
 
     public List<DBO> getPaged(int numResults, int offset) throws SQLException {
-        String query;
+        return executeIntoList(pageQuery("SELECT * FROM " + getTable, numResults, offset), resultSetTransformer, new ArrayList<>());
+    }
+
+    public String pageQuery(String query, int numResults, int offset) {
         switch (session.getDbms()) {
             case POSTGRES:
-                query = "SELECT * FROM " + getTable + " LIMIT " + numResults + " OFFSET " + offset;
-                break;
+                return query + " LIMIT " + numResults + " OFFSET " + offset;
             case SQLSERVER:
-                query = "SELECT * FROM " + getTable + " OFFSET " + offset + " FETCH NEXT " + numResults + " ROWS ONLY";
-                break;
+                return query + " OFFSET " + offset + " FETCH NEXT " + numResults + " ROWS ONLY";
             case MYSQL:
-                query = "SELECT * FROM " + getTable + " LIMIT " + offset + "," + numResults;
-                break;
+                return query + " LIMIT " + offset + "," + numResults;
             case ORACLE:
-                query = "SELECT * FROM " + getTable + " OFFSET " + offset + " FETCH NEXT " + numResults + " ROWS ONLY";
-                break;
+                return query + " OFFSET " + offset + " FETCH NEXT " + numResults + " ROWS ONLY";
             default:
                 throw new IllegalArgumentException("Query for DBMS " + session.getDbms().name() + " not known.");
         }
-        return executeIntoList(query, resultSetTransformer, new ArrayList<>());
     }
 
     public static String sqlReadyList(Object ... objects) {
