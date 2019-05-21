@@ -1,4 +1,4 @@
-package com.jury.core.entity.transformer.impl;
+package com.jury.core.database.transformer.impl;
 
 public class YYYYMMDDdashTransformer extends YYYYMMDDTransformer {
 

@@ -1,10 +1,10 @@
-package com.jury.core.entity.transformer;
+package com.jury.core.database.transformer;
 
-import com.jury.core.entity.DatabaseObject;
+import com.jury.core.database.entity.DatabaseObject;
 import com.jury.core.exception.TransformerException;
 
 /**
- * This class should have a subclass for each subclass of com.jury.core.entity.DatabaseObject
+ * This class should have a subclass for each subclass of com.jury.core.database.entity.DatabaseObject
  * This will either consume or produce an object inheriting from DatabaseObject, to produce or consume a String in
  * some format e.g. CSV, pipe delimited file.
  *

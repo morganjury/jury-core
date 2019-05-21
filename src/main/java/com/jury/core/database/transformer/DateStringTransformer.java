@@ -1,4 +1,4 @@
-package com.jury.core.entity.transformer;
+package com.jury.core.database.transformer;
 
 import com.jury.core.exception.TransformerException;
 

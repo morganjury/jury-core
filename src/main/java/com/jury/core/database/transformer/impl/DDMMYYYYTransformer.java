@@ -1,6 +1,6 @@
-package com.jury.core.entity.transformer.impl;
+package com.jury.core.database.transformer.impl;
 
-import com.jury.core.entity.transformer.DateStringTransformer;
+import com.jury.core.database.transformer.DateStringTransformer;
 import com.jury.core.exception.TransformerException;
 
 import java.time.LocalDate;

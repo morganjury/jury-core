@@ -1,13 +1,12 @@
-package com.jury.core.entity.transformer;
+package com.jury.core.database.transformer;
 
-import com.jury.core.entity.transformer.impl.DDMMYYYYslashTransformer;
-import com.jury.core.entity.transformer.impl.YYYYMMDDTransformer;
-import com.jury.core.entity.transformer.impl.YYYYMMDDdashTransformer;
+import com.jury.core.database.transformer.impl.DDMMYYYYslashTransformer;
+import com.jury.core.database.transformer.impl.YYYYMMDDTransformer;
+import com.jury.core.database.transformer.impl.YYYYMMDDdashTransformer;
 import org.junit.Test;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
 

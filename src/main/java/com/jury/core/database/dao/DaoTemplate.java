@@ -1,6 +1,6 @@
-package com.jury.core.entity.dao;
+package com.jury.core.database.dao;
 
-import com.jury.core.entity.DatabaseObject;
+import com.jury.core.database.entity.DatabaseObject;
 import com.jury.core.exception.TransformerException;
 
 import java.sql.SQLException;

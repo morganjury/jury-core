@@ -1,12 +1,12 @@
-package com.jury.core.entity.transformer;
+package com.jury.core.database.transformer;
 
-import com.jury.core.entity.DatabaseObject;
+import com.jury.core.database.entity.DatabaseObject;
 import com.jury.core.exception.TransformerException;
 
 import java.sql.ResultSet;
 
 /**
- * This class should have a subclass for each subclass of com.jury.core.entity.DatabaseObject
+ * This class should have a subclass for each subclass of com.jury.core.database.entity.DatabaseObject
  * This class will consume a ResultSet to produce a DatabaseObject, the consume method is a No-Op, instead there is an
  * insertString method.
  *

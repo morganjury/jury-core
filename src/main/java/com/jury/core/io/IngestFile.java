@@ -1,8 +1,8 @@
 package com.jury.core.io;
 
-import com.jury.core.entity.DatabaseObject;
-import com.jury.core.entity.dao.DaoTemplate;
-import com.jury.core.entity.transformer.FileTransformer;
+import com.jury.core.database.entity.DatabaseObject;
+import com.jury.core.database.dao.DaoTemplate;
+import com.jury.core.database.transformer.FileTransformer;
 
 import java.io.File;
 import java.io.IOException;

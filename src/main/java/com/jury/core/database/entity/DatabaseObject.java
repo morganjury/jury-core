@@ -1,4 +1,4 @@
-package com.jury.core.entity;
+package com.jury.core.database.entity;
 
 public interface DatabaseObject<PK> {
 

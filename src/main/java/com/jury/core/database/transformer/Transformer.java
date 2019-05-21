@@ -1,10 +1,10 @@
-package com.jury.core.entity.transformer;
+package com.jury.core.database.transformer;
 
 import com.jury.core.exception.TransformerException;
 
 /**
  * This class is intended for consuming and producing one object into another. More specifically, intended for
- * com.jury.core.entity.DatabaseObject but have observed more general use cases so has been opened up.
+ * com.jury.core.database.entity.DatabaseObject but have observed more general use cases so has been opened up.
  * For examples, see ResultSetTransformer and CsvTransformer in this same package. The intention is to take an object of
  * interest and produce an object which is an alternative representation of this object of interest, which can then be
  * used to reproduce the original object of interest i.e. this is a bi-directional function.

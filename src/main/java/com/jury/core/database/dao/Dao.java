@@ -1,7 +1,7 @@
-package com.jury.core.entity.dao;
+package com.jury.core.database.dao;
 
-import com.jury.core.entity.DatabaseObject;
-import com.jury.core.entity.transformer.ResultSetTransformer;
+import com.jury.core.database.entity.DatabaseObject;
+import com.jury.core.database.transformer.ResultSetTransformer;
 import com.jury.core.exception.TransformerException;
 import com.jury.core.session.Session;
 
