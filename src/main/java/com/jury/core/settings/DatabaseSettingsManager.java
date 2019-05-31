@@ -21,26 +21,6 @@ public class DatabaseSettingsManager {
         settingsFileManager = new SettingsFileManager(databaseSettingsFile);
     }
 
-    public boolean setDbms(DBMS dbms) {
-        return changeSetting(DatabaseSetting.DBMS, dbms);
-    }
-
-    public boolean setHost(String host) {
-        return changeSetting(DatabaseSetting.HOST, host);
-    }
-
-    public boolean setPort(int port) {
-        return changeSetting(DatabaseSetting.PORT, port);
-    }
-
-    public boolean setDbName(String dbName) {
-        return changeSetting(DatabaseSetting.DB_NAME, dbName);
-    }
-
-    public boolean setBackupLocation(File outputFolder) {
-        return changeSetting(DatabaseSetting.BACKUP_LOCATION, outputFolder);
-    }
-
     public DBMS getDbms() {
         return DBMS.valueOf(settingsFileManager.getSettingOrDefault(DatabaseSetting.DBMS, "POSTGRES"));
     }
@@ -56,6 +36,14 @@ public class DatabaseSettingsManager {
 
     public String getDbName() throws SettingException {
         return settingsFileManager.getSetting(DatabaseSetting.DB_NAME);
+    }
+
+    public String getDbUser() throws SettingException {
+        return settingsFileManager.getSetting(DatabaseSetting.DB_USER);
+    }
+
+    public String getDbPwd() throws SettingException {
+        return settingsFileManager.getSetting(DatabaseSetting.DB_PWD);
     }
 
     public DBMS getTestDbms() {
