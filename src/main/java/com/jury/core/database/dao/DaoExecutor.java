@@ -1,13 +1,16 @@
 package com.jury.core.database.dao;
 
+import com.jury.core.Action;
 import com.jury.core.database.entity.DatabaseObject;
 import com.jury.core.database.transformer.ResultSetTransformer;
 import com.jury.core.exception.EmptyResultSetException;
+import com.jury.core.io.FileHandler;
 import com.jury.core.session.Session;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Savepoint;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,6 +55,21 @@ public class DaoExecutor {
         }
         rs.next();
         return rs;
+    }
+
+    public void transactional(Action action) throws SQLException {
+        session.getConnection().setAutoCommit(false);
+        Savepoint before = session.getConnection().setSavepoint();
+        try {
+            action.perform();
+        } catch (Exception e) {
+            session.getConnection().rollback(before);
+            session.getConnection().releaseSavepoint(before);
+            throw e;
+        } finally {
+            session.getConnection().commit();
+            session.getConnection().setAutoCommit(true);
+        }
     }
 
     protected void executeWithAction(String query, ResultSetAction rsa) throws SQLException {
