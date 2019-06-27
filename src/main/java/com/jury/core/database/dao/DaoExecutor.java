@@ -58,6 +58,7 @@ public class DaoExecutor {
     }
 
     public void transactional(Action action) throws SQLException {
+        boolean originalAutoCommitState = session.getConnection().getAutoCommit();
         session.getConnection().setAutoCommit(false);
         Savepoint before = session.getConnection().setSavepoint();
         try {
@@ -68,7 +69,7 @@ public class DaoExecutor {
             throw e;
         } finally {
             session.getConnection().commit();
-            session.getConnection().setAutoCommit(true);
+            session.getConnection().setAutoCommit(originalAutoCommitState);
         }
     }
 
