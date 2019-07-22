@@ -20,6 +20,10 @@ public class DaoExecutor {
         void perform(ResultSet rs);
     }
 
+    public interface TransactionalAction {
+        void perform() throws SQLException;
+    }
+
     protected Session session;
 
     public DaoExecutor(Session session) {
@@ -57,7 +61,7 @@ public class DaoExecutor {
         return rs;
     }
 
-    public void transactional(Action action) throws SQLException {
+    public void transactional(TransactionalAction action) throws SQLException {
         boolean originalAutoCommitState = session.getConnection().getAutoCommit();
         session.getConnection().setAutoCommit(false);
         Savepoint before = session.getConnection().setSavepoint();
