@@ -1,19 +1,19 @@
 package com.jury.core.io;
 
-import com.jury.core.database.entity.DatabaseObject;
 import com.jury.core.database.dao.DaoTemplate;
-import com.jury.core.database.transformer.FileTransformer;
+import com.jury.core.database.entity.DatabaseObject;
+import com.jury.core.database.transformer.DboFileTransformer;
 
 import java.io.File;
 import java.io.IOException;
 
-public class IngestFile<T extends DatabaseObject, PK> {
+public class IngestFile<PK, T extends DatabaseObject<PK>> {
 
-    private FileTransformer<T> fileTransformer;
-    private DaoTemplate<T,PK> dao;
+    private DboFileTransformer<T> dboFileTransformer;
+    private DaoTemplate<PK, T> dao;
 
-    public IngestFile(FileTransformer<T> fileTransformer, DaoTemplate<T, PK> dao) {
-        this.fileTransformer = fileTransformer;
+    public IngestFile(DboFileTransformer<T> dboFileTransformer, DaoTemplate<PK, T> dao) {
+        this.dboFileTransformer = dboFileTransformer;
         this.dao = dao;
     }
 
@@ -33,7 +33,7 @@ public class IngestFile<T extends DatabaseObject, PK> {
             }
             try {
                 c.lines++;
-                T object = fileTransformer.consume(line);
+                T object = dboFileTransformer.consume(line);
                 c.objects++;
                 dao.insert(object);
                 c.success++;

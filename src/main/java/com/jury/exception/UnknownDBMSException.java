@@ -1,4 +1,4 @@
-package com.jury.core.exception;
+package com.jury.exception;
 
 public class UnknownDBMSException extends RuntimeException {
 

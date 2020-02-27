@@ -1,12 +1,12 @@
 package com.jury.core.database.dao;
 
 import com.jury.core.database.entity.DatabaseObject;
-import com.jury.core.exception.TransformerException;
+import com.jury.exception.TransformerException;
 
 import java.sql.SQLException;
 import java.util.List;
 
-public interface DaoTemplate<DBO extends DatabaseObject, PK> {
+public interface DaoTemplate<PK, DBO extends DatabaseObject<PK>> {
 
     void insert(DBO object) throws SQLException;
     void update(PK uid, DBO object) throws SQLException;

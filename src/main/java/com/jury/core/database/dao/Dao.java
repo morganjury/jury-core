@@ -1,9 +1,9 @@
 package com.jury.core.database.dao;
 
 import com.jury.core.database.entity.DatabaseObject;
-import com.jury.core.database.transformer.ResultSetTransformer;
-import com.jury.core.exception.TransformerException;
+import com.jury.core.database.transformer.DboResultSetTransformer;
 import com.jury.core.session.Session;
+import com.jury.exception.TransformerException;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,36 +11,36 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Dao<DBO extends DatabaseObject, PK> extends DaoExecutor implements DaoTemplate<DBO,PK> {
+public class Dao<PK, DBO extends DatabaseObject<PK>> extends DaoExecutor implements DaoTemplate<PK, DBO> {
 
     public String idColumn;
     public String getTable;
     public String insertTable;
     public String insertColumns;
-    public ResultSetTransformer<DBO> resultSetTransformer;
+    public DboResultSetTransformer<PK, DBO> dboResultSetTransformer;
 
-    public Dao(Session session, String getTable, ResultSetTransformer<DBO> resultSetTransformer) {
-        this(session, null, getTable, getTable, null, resultSetTransformer);
+    public Dao(Session session, String getTable, DboResultSetTransformer<PK, DBO> dboResultSetTransformer) {
+        this(session, null, getTable, getTable, null, dboResultSetTransformer);
     }
 
-    public Dao(Session session, String getTable, String insertColumns, ResultSetTransformer<DBO> resultSetTransformer) {
-        this(session, null, getTable, getTable, insertColumns, resultSetTransformer);
+    public Dao(Session session, String getTable, String insertColumns, DboResultSetTransformer<PK, DBO> dboResultSetTransformer) {
+        this(session, null, getTable, getTable, insertColumns, dboResultSetTransformer);
     }
 
-    public Dao(Session session, String idColumn, String getTable, String insertTable, String insertColumns, ResultSetTransformer<DBO> resultSetTransformer) {
+    public Dao(Session session, String idColumn, String getTable, String insertTable, String insertColumns, DboResultSetTransformer<PK, DBO> dboResultSetTransformer) {
         super(session);
         this.idColumn = idColumn == null ? "id" : idColumn;
         this.getTable = getTable;
         this.insertTable = insertTable;
         this.insertColumns = insertColumns;
-        this.resultSetTransformer = resultSetTransformer;
+        this.dboResultSetTransformer = dboResultSetTransformer;
     }
 
     public void insert(DBO object) throws SQLException {
         if (insertColumns == null) {
-            executeWithNoResults("INSERT INTO " + insertTable + " VALUES (" + resultSetTransformer.insertString(object) + ")");
+            executeWithNoResults("INSERT INTO " + insertTable + " VALUES (" + dboResultSetTransformer.insertString(object) + ")");
         } else {
-            executeWithNoResults("INSERT INTO " + insertTable + " (" + insertColumns + ") VALUES (" + resultSetTransformer.insertString(object) + ")");
+            executeWithNoResults("INSERT INTO " + insertTable + " (" + insertColumns + ") VALUES (" + dboResultSetTransformer.insertString(object) + ")");
         }
     }
 
@@ -54,19 +54,19 @@ public class Dao<DBO extends DatabaseObject, PK> extends DaoExecutor implements 
 
     public DBO get(PK key) throws SQLException, TransformerException {
         ResultSet rs = execute("SELECT * FROM " + getTable + " WHERE " + idColumn + "=" + sqlReadyList(key));
-        return resultSetTransformer.produce(rs);
+        return dboResultSetTransformer.produce(rs);
     }
 
     public List<DBO> get(List<PK> list) throws SQLException {
-        return executeIntoList("SELECT * FROM " + getTable + " WHERE " + idColumn + " in (" + sqlReadyList(list) + ")", resultSetTransformer, new ArrayList<>());
+        return executeIntoList("SELECT * FROM " + getTable + " WHERE " + idColumn + " in (" + sqlReadyList(list) + ")", dboResultSetTransformer, new ArrayList<>());
     }
 
     public List<DBO> getAll() throws SQLException {
-        return executeIntoList("SELECT * FROM " + getTable, resultSetTransformer, new ArrayList<>());
+        return executeIntoList("SELECT * FROM " + getTable, dboResultSetTransformer, new ArrayList<>());
     }
 
     public List<DBO> getPaged(int numResults, int offset) throws SQLException {
-        return executeIntoList(pageQuery("SELECT * FROM " + getTable, numResults, offset), resultSetTransformer, new ArrayList<>());
+        return executeIntoList(pageQuery("SELECT * FROM " + getTable, numResults, offset), dboResultSetTransformer, new ArrayList<>());
     }
 
     public String pageQuery(String query, int numResults, int offset) {
@@ -120,8 +120,8 @@ public class Dao<DBO extends DatabaseObject, PK> extends DaoExecutor implements 
         // must loop here because this method is stupid:
         // when replacing ,'','', it sees the first ,'', and replaces it with ,NULL, but then starts at the following '
         // instead of the separating , so it only sees '', instead of ,'',
-        while (insertString.contains(",\'\',")) {
-            insertString = insertString.replaceAll(",\'\',",",NULL,");
+        while (insertString.contains(",'',")) {
+            insertString = insertString.replaceAll(",'',",",NULL,");
         }
         return insertString;
     }

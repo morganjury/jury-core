@@ -9,7 +9,16 @@
     <version>1.0-SNAPSHOT</version>
 
     <dependencies>
-
+        <dependency>
+            <groupId>jury-transform</groupId>
+            <artifactId>jury-transform</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>jury-rules</groupId>
+            <artifactId>jury-rules</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
         <!-- Test dependencies -->
         <!-- These should have scope 'test' but they wouldn't be packaged into the jar if they did -->
         <!-- TODO there must be a way to not package these dependencies into the jar (bloating) but still link to the project depending on jury-core -->
@@ -62,7 +71,6 @@
             <artifactId>slf4j-log4j12</artifactId>
             <version>1.7.25</version>
         </dependency>
-
     </dependencies>
 
     <build>

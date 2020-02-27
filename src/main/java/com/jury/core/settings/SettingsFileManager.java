@@ -1,7 +1,7 @@
 package com.jury.core.settings;
 
-import com.jury.core.exception.SettingException;
 import com.jury.core.io.FileHandler;
+import com.jury.exception.SettingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

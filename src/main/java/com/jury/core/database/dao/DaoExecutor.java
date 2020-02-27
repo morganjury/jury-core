@@ -1,11 +1,9 @@
 package com.jury.core.database.dao;
 
-import com.jury.core.Action;
 import com.jury.core.database.entity.DatabaseObject;
-import com.jury.core.database.transformer.ResultSetTransformer;
-import com.jury.core.exception.EmptyResultSetException;
-import com.jury.core.io.FileHandler;
+import com.jury.core.database.transformer.DboResultSetTransformer;
 import com.jury.core.session.Session;
+import com.jury.exception.EmptyResultSetException;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -29,8 +27,6 @@ public class DaoExecutor {
     public DaoExecutor(Session session) {
         this.session = session;
     }
-
-    // TODO make transactional commit method - look at FileHandler.executeSqlFile
 
     protected void executeWithNoResults(String query) throws SQLException {
         PreparedStatement statement = session.getConnection().prepareStatement(query);
@@ -85,7 +81,7 @@ public class DaoExecutor {
         }
     }
 
-    protected <T extends DatabaseObject> List<T> executeIntoList(String query, ResultSetTransformer<T> transformer, List<T> list) throws SQLException {
+    protected <PK, DBO extends DatabaseObject<PK>> List<DBO> executeIntoList(String query, DboResultSetTransformer<PK, DBO> transformer, List<DBO> list) throws SQLException {
         try {
             executeWithAction(query, (result) -> list.add(transformer.produce(result)));
             return list;

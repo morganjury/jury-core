@@ -1,6 +1,6 @@
 package com.jury.core.session;
 
-import com.jury.core.exception.UnknownDBMSException;
+import com.jury.exception.UnknownDBMSException;
 
 public enum DBMS {
 

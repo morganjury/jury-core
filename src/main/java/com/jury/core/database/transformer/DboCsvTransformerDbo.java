@@ -1,7 +1,7 @@
 package com.jury.core.database.transformer;
 
 import com.jury.core.database.entity.DatabaseObject;
-import com.jury.core.exception.TransformerException;
+import com.jury.exception.TransformerException;
 
 /**
  * This class should have a subclass for each subclass of com.jury.core.database.entity.DatabaseObject
@@ -12,7 +12,7 @@ import com.jury.core.exception.TransformerException;
  *
  * @param <DBO> The class inheriting from DatabaseObject
  */
-public interface CsvTransformer<DBO extends DatabaseObject> extends FileTransformer<DBO> {
+public interface DboCsvTransformerDbo<DBO extends DatabaseObject> extends DboFileTransformer<DBO> {
 
     String COMMA_IN_QUOTES_REGEX = ",(?=(?:[^\\\"]*\\\"[^\\\"]*\\\")*[^\\\"]*$)";
 

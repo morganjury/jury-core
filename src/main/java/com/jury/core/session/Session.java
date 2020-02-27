@@ -1,7 +1,7 @@
 package com.jury.core.session;
 
-import com.jury.core.exception.SettingException;
 import com.jury.core.settings.DatabaseSettingsManager;
+import com.jury.exception.SettingException;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
