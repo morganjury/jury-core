@@ -13,7 +13,7 @@ import com.jury.transform.FileTransformer;
  *
  * @param <DBO> The class inheriting from DatabaseObject
  */
-public interface DboFileTransformer<DBO extends DatabaseObject> extends FileTransformer<DBO> {
+public interface DboFileTransformer<DBO extends DatabaseObject<?>> extends FileTransformer<DBO> {
 
 
 

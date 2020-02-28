@@ -81,7 +81,7 @@ public class DaoExecutor {
         }
     }
 
-    protected <PK, DBO extends DatabaseObject<PK>> List<DBO> executeIntoList(String query, DboResultSetTransformer<PK, DBO> transformer, List<DBO> list) throws SQLException {
+    protected <DBO extends DatabaseObject<?>> List<DBO> executeIntoList(String query, DboResultSetTransformer<DBO> transformer, List<DBO> list) throws SQLException {
         try {
             executeWithAction(query, (result) -> list.add(transformer.produce(result)));
             return list;

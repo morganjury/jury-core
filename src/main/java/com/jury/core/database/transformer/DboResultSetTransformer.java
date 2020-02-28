@@ -13,7 +13,7 @@ import com.jury.transform.ResultSetTransformer;
  *
  * @param <DBO> The class inheriting from DatabaseObject
  */
-public interface DboResultSetTransformer<PK, DBO extends DatabaseObject<PK>> extends ResultSetTransformer<DBO> {
+public interface DboResultSetTransformer<DBO extends DatabaseObject<?>> extends ResultSetTransformer<DBO> {
 
 
 

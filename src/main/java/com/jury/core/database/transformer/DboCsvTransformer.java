@@ -12,7 +12,7 @@ import com.jury.exception.TransformerException;
  *
  * @param <DBO> The class inheriting from DatabaseObject
  */
-public interface DboCsvTransformer<DBO extends DatabaseObject> extends DboFileTransformer<DBO> {
+public interface DboCsvTransformer<DBO extends DatabaseObject<?>> extends DboFileTransformer<DBO> {
 
     String COMMA_IN_QUOTES_REGEX = ",(?=(?:[^\\\"]*\\\"[^\\\"]*\\\")*[^\\\"]*$)";
 

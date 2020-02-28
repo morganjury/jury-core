@@ -17,17 +17,17 @@ public class Dao<PK, DBO extends DatabaseObject<PK>> extends DaoExecutor impleme
     public String getTable;
     public String insertTable;
     public String insertColumns;
-    public DboResultSetTransformer<PK, DBO> dboResultSetTransformer;
+    public DboResultSetTransformer<DBO> dboResultSetTransformer;
 
-    public Dao(Session session, String getTable, DboResultSetTransformer<PK, DBO> dboResultSetTransformer) {
+    public Dao(Session session, String getTable, DboResultSetTransformer<DBO> dboResultSetTransformer) {
         this(session, null, getTable, getTable, null, dboResultSetTransformer);
     }
 
-    public Dao(Session session, String getTable, String insertColumns, DboResultSetTransformer<PK, DBO> dboResultSetTransformer) {
+    public Dao(Session session, String getTable, String insertColumns, DboResultSetTransformer<DBO> dboResultSetTransformer) {
         this(session, null, getTable, getTable, insertColumns, dboResultSetTransformer);
     }
 
-    public Dao(Session session, String idColumn, String getTable, String insertTable, String insertColumns, DboResultSetTransformer<PK, DBO> dboResultSetTransformer) {
+    public Dao(Session session, String idColumn, String getTable, String insertTable, String insertColumns, DboResultSetTransformer<DBO> dboResultSetTransformer) {
         super(session);
         this.idColumn = idColumn == null ? "id" : idColumn;
         this.getTable = getTable;
