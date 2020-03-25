@@ -88,7 +88,7 @@ public class Dao<PK, DBO extends DatabaseObject<PK>> extends DaoExecutor impleme
         return buildList(Arrays.asList(objects));
     }
 
-    public static String sqlReadyListFromList(List<Object> list) {
+    public static String sqlReadyListFromList(List<?> list) {
         return buildList(list);
     }
 
@@ -96,7 +96,7 @@ public class Dao<PK, DBO extends DatabaseObject<PK>> extends DaoExecutor impleme
         return nullifyBlanks(sqlReadyListFromList(list));
     }
 
-    private static String buildList(List<Object> list) {
+    private static String buildList(List<?> list) {
         StringBuilder sb = new StringBuilder();
         boolean isFirst = true;
         for (Object o : list) {
