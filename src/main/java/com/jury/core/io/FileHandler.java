@@ -31,10 +31,12 @@ public class FileHandler {
         Savepoint before = connection.setSavepoint();
         try {
             StringBuilder sb = new StringBuilder();
-            FileHandler.readWithAction(file, sb::append);
+            readWithAction(file, sb::append);
             String[] commands = sb.toString()
-                    .replace("\t", "")
-                    .replace("\n", "")
+                    .replace("\t", " ")
+                    .replace("\n", " ")
+                    .trim()
+                    .replaceAll(" +", " ")
                     .split(";");
             for (String command : commands) {
                 connection.prepareStatement(command).execute();
